@@ -125,6 +125,46 @@ jobs:
         env:
           CHANGED: ${{ steps.all-negated.outputs.changed }}
 
+      - id: current-pr-files
+        if: github.event.pull_request
+        run: |
+          echo 'files<<EOF' >>"$GITHUB_OUTPUT" && gh pr diff "$PR_NUM" --name-only | tee -a "$GITHUB_OUTPUT"
+          echo 'EOF' >>"$GITHUB_OUTPUT"
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ github.token }}
+
+      - id: current-pr
+        if: steps.current-pr-files.outcome == 'success'
+        uses: ./.
+        with:
+          files: ${{ steps.current-pr-files.outputs.files }}
+
+      - run: test "$CHANGED" = "true"
+        if: steps.current-pr.outcome == 'success'
+        env:
+          CHANGED: ${{ steps.current-pr.outputs.changed }}
+
+      - id: current-pr-negate-files
+        if: github.event.pull_request
+        run: |
+          echo 'files<<EOF' >>"$GITHUB_OUTPUT" && gh pr diff "$PR_NUM" --name-only | sed 's/^/!/' | tee -a "$GITHUB_OUTPUT"
+          echo 'EOF' >>"$GITHUB_OUTPUT"
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ github.token }}
+
+      - id: current-pr-negate
+        if: steps.current-pr-negate-files.outcome == 'success'
+        uses: ./.
+        with:
+          files: ${{ steps.current-pr-negate-files.outputs.files }}
+
+      - run: test "$CHANGED" = "false"
+        if: steps.current-pr-negate.outcome == 'success'
+        env:
+          CHANGED: ${{ steps.current-pr-negate.outputs.changed }}
+
       - id: truncated
         uses: ./.
         with:
