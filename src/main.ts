@@ -33,6 +33,7 @@ class Repository {
             owner,
             repo,
             basehead,
+            per_page: 1, // Commit metadata is not needed
         });
 
         return data;
