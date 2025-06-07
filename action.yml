@@ -1,0 +1,41 @@
+name: Compare commits' files
+description: >-
+  Check whether the specified files were changed in a pull request or push
+
+branding:
+  color: orange
+  icon: search
+
+inputs:
+  repository:
+    description: Target repository name with owner
+    default: ${{ github.repository }}
+    required: true
+
+  files:
+    description: File path/name glob patterns to check, one pattern per line
+    required: true
+
+  base:
+    description: Base commit/branch
+    default: ${{ github.event.merge_group.base_sha || github.event.pull_request.base.sha || github.event.before }}
+    required: true
+
+  head:
+    description: Head commit/branch
+    default: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
+    required: true
+
+  github-token:
+    description: GitHub API token to use
+    default: ${{ github.token }}
+    required: true
+
+outputs:
+  changed:
+    description: >-
+      `true` if a change in the files was detected, `false` otherwise
+
+runs:
+  using: node20
+  main: dist/index.js
