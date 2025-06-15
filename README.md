@@ -14,7 +14,7 @@ Intended use: skip jobs or steps if relevant files were not changed.
 
 The owner and repository name, in `owner/name` format.
 
-_Default_: `${{ github.repository }}` -
+**Default**: `${{ github.repository }}` -
 the repository where the workflow was triggered.
 
 ### `files`
@@ -36,14 +36,14 @@ for syntax details.
 
 Base commit/branch to compare.
 
-_Default_: Pull request/merge group base branch/commit.
+**Default**: Pull request/merge group base branch/commit.
 Or the previous branch head for `push` event.
 
 ### `head`
 
 Head commit/branch to compare.
 
-_Default_: `${{ github.event.pull_request.merge_commit_sha || github.sha }}` -
+**Default**: `${{ github.event.pull_request.merge_commit_sha || github.sha }}` -
 the "current commit" or merge commit for pull requests.
 
 > [!NOTE]
@@ -54,7 +54,7 @@ the "current commit" or merge commit for pull requests.
 
 GitHub API token to use.
 
-_Default_: `${{ github.token }}`
+**Default**: `${{ github.token }}`
 
 ## Outputs
 
