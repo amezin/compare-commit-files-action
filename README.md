@@ -43,12 +43,12 @@ Or the previous branch head for `push` event.
 
 Head commit/branch to compare.
 
-**Default**: `${{ github.event.pull_request.merge_commit_sha || github.sha }}` -
-the "current commit" or merge commit for pull requests.
+**Default**: `${{ github.event.pull_request.merge_commit_sha }}` for `pull_request_target` event,
+otherwise `${{ github.sha }}` - the "current commit" or merge commit for pull requests.
 
 > [!NOTE]
 > There is a special case for `pull_request_target` event -
-> because `${{ github.sha }}` will be the head of the default branch for `pull_request_target`.
+> because `${{ github.sha }}` will be the head of the base branch for `pull_request_target`.
 
 ### `github-token`
 
