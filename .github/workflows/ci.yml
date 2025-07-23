@@ -125,3 +125,14 @@ jobs:
       - run: test "$CHANGED" = "false"
         env:
           CHANGED: ${{ steps.no-match-negated.outputs.changed }}
+
+      - id: empty
+        uses: ./.
+        with:
+          files: |
+            # empty, only comment
+          base: efc72ea7731bb189c5c9c5dfa1836eb281732f48
+
+      - run: test "$CHANGED" = "false"
+        env:
+          CHANGED: ${{ steps.empty.outputs.changed }}
