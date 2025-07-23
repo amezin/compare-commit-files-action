@@ -30064,9 +30064,11 @@ async function run() {
         .map(pattern => new minimatch_1.Minimatch(pattern.trim(), minimatchOptions))
         .filter(pattern => !pattern.comment && !pattern.empty)
         .reverse();
-    const allNegated = !patterns.some(pattern => !pattern.negate);
-    if (allNegated) {
-        patterns.push(new minimatch_1.Minimatch('**', minimatchOptions));
+    if (patterns.length > 0) {
+        const allNegated = !patterns.some(pattern => !pattern.negate);
+        if (allNegated) {
+            patterns.push(new minimatch_1.Minimatch('**', minimatchOptions));
+        }
     }
     const github = (0, github_1.getOctokit)(token, { log }, plugin_request_log_1.requestLog);
     const repo = new Repository(github, repository);

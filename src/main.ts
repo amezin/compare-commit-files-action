@@ -66,10 +66,12 @@ async function run() {
         .filter(pattern => !pattern.comment && !pattern.empty)
         .reverse();
 
-    const allNegated = !patterns.some(pattern => !pattern.negate);
+    if (patterns.length > 0) {
+        const allNegated = !patterns.some(pattern => !pattern.negate);
 
-    if (allNegated) {
-        patterns.push(new Minimatch('**', minimatchOptions));
+        if (allNegated) {
+            patterns.push(new Minimatch('**', minimatchOptions));
+        }
     }
 
     const github = getOctokit(token, { log }, requestLog);
