@@ -1,8 +1,7 @@
 import { inspect } from 'node:util';
 
 import * as core from '@actions/core';
-import { getOctokit } from '@actions/github';
-import { requestLog } from '@octokit/plugin-request-log';
+import { getOctokit } from '@amezin/js-actions-octokit';
 
 import { Minimatch, MinimatchOptions } from 'minimatch';
 
@@ -41,15 +40,6 @@ class Repository {
 }
 
 async function run() {
-    const log = {
-        debug: core.isDebug()
-            ? console.debug.bind(console)
-            : (..._args: unknown[]) => {},
-        info: console.info.bind(console),
-        warn: console.warn.bind(console),
-        error: console.error.bind(console),
-    };
-
     const minimatchOptions: MinimatchOptions = {
         platform: 'linux', // We're matching against paths returned by API
         dot: true,
@@ -74,7 +64,7 @@ async function run() {
         }
     }
 
-    const github = getOctokit(token, { log }, requestLog);
+    const github = getOctokit(token);
     const repo = new Repository(github, repository);
 
     const { files } = await repo.compareCommits([base, head].join('...'));
