@@ -37,5 +37,5 @@ outputs:
       `true` if a change in the files was detected, `false` otherwise
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
